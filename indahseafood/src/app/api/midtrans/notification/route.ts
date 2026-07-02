@@ -16,8 +16,10 @@ import {
  * transaksi berubah (pending -> settlement, dll).
  */
 export async function POST(request: NextRequest) {
+   console.log("========== WEBHOOK MASUK ==========");
   try {
     const notif = (await request.json()) as MidtransNotification;
+    console.log(notif);
 
     // 1. Verifikasi signature — WAJIB, supaya tidak ada yang bisa
     //    memalsukan notifikasi pembayaran dari luar.
