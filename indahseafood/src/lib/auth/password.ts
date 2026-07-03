@@ -21,11 +21,11 @@ const KEY_LEN = 64;
 
 export async function hashPassword(plainPassword: string): Promise<string> {
   const salt = randomBytes(16);
-  const derivedKey = (await scrypt(plainPassword, salt, KEY_LEN, {
-    N: SCRYPT_N,
-    r: SCRYPT_R,
-    p: SCRYPT_P,
-  })) as Buffer;
+  const derivedKey = (await scrypt(
+  plainPassword,
+  salt,
+  KEY_LEN
+)) as Buffer;
 
   return [
     "scrypt",
@@ -48,12 +48,11 @@ export async function verifyPassword(
     const salt = Buffer.from(saltHex, "hex");
     const expected = Buffer.from(hashHex, "hex");
 
-    const derivedKey = (await scrypt(plainPassword, salt, expected.length, {
-      N: Number(nStr),
-      r: Number(rStr),
-      p: Number(pStr),
-    })) as Buffer;
-
+    const derivedKey = (await scrypt(
+  plainPassword,
+  salt,
+  expected.length
+)) as Buffer;
     return timingSafeEqual(derivedKey, expected);
   } catch {
     return false;
